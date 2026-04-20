@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PAGUEM O LUCAS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red: #e71c1c;
+      --dark-red: #8b0000;
+      --yellow: #ffd700;
+      --cream: #f5e6c8;
+      --dark: #0d0d0d;
+      --paper: #f0ddb0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--dark);
+      color: var(--cream);
+      font-family: 'Oswald', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Scanline overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Background texture */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(139,0,0,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(231,28,28,0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper { position: relative; z-index: 1; }
+
+    /* ===== HERO ===== */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+      position: relative;
+    }
+
+    .stamp {
+      display: inline-block;
+      border: 6px solid var(--red);
+      color: var(--red);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      letter-spacing: 0.05em;
+      padding: 10px 30px;
+      transform: rotate(-3deg);
+      text-shadow: 4px 4px 0 rgba(139,0,0,0.5);
+      box-shadow: inset 0 0 0 3px rgba(231,28,28,0.2), 6px 6px 0 rgba(139,0,0,0.4);
+      animation: flicker 4s infinite;
+      position: relative;
+    }
+
+    .stamp::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 2px dashed rgba(231,28,28,0.3);
+      pointer-events: none;
+    }
+
+    @keyframes flicker {
+      0%, 95%, 100% { opacity: 1; }
+      96% { opacity: 0.85; }
+      97% { opacity: 1; }
+      98% { opacity: 0.9; }
+    }
+
+    .subtitle {
+      margin-top: 20px;
+      font-family: 'Special Elite', cursive;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      color: var(--yellow);
+      letter-spacing: 0.1em;
+      opacity: 0.9;
+    }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 0 40px;
+      margin: 20px 0;
+    }
+    .divider-line { flex: 1; height: 2px; background: linear-gradient(to right, transparent, var(--red), transparent); }
+    .divider-skull { font-size: 1.4rem; }
+
+    /* ===== COUNTER SECTION ===== */
+    .counter-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      padding: 20px 40px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(20, 5, 5, 0.8);
+      border: 1px solid rgba(231,28,28,0.3);
+      border-radius: 4px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--dark-red), var(--red), var(--dark-red));
+    }
+
+    .card-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      color: rgba(245,230,200,0.5);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .card-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      color: var(--yellow);
+      line-height: 1;
+      text-shadow: 0 0 20px rgba(255,215,0,0.4);
+    }
+
+    .card-value .unit {
+      font-size: 0.5em;
+      color: rgba(255,215,0,0.6);
+      margin-left: 4px;
+    }
+
+    .card-sub {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: rgba(245,230,200,0.4);
+      font-family: 'Special Elite', cursive;
+    }
+
+    /* Time units display */
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .time-unit {
+      text-align: center;
+    }
+
+    .time-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--yellow);
+      display: block;
+      text-shadow: 0 0 15px rgba(255,215,0,0.4);
+    }
+
+    .time-label {
+      font-size: 0.6rem;
+      color: rgba(245,230,200,0.4);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* ===== LOAN SHARK SECTION ===== */
+    .shark-section {
+      max-width: 860px;
+      margin: 0 auto 50px;
+      padding: 0 40px;
+    }
+
+    .shark-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .shark-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      color: var(--red);
+      letter-spacing: 0.05em;
+      text-shadow: 3px 3px 0 rgba(139,0,0,0.6);
+    }
+
+    .shark-desc {
+      font-family: 'Special Elite', cursive;
+      font-size: 0.9rem;
+      color: rgba(245,230,200,0.5);
+      margin-top: 8px;
+    }
+
+    .shark-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .shark-table tr {
+      border-bottom: 1px solid rgba(231,28,28,0.15);
+      transition: background 0.2s;
+    }
+
+    .shark-table tr:hover {
+      background: rgba(231,28,28,0.07);
+    }
+
+    .shark-table td {
+      padding: 14px 16px;
+      font-size: 0.9rem;
+    }
+
+    .shark-table td:first-child {
+      font-family: 'Special Elite', cursive;
+      color: rgba(245,230,200,0.7);
+      width: 40%;
+    }
+
+    .shark-table td:nth-child(2) {
+      color: rgba(245,230,200,0.4);
+      font-size: 0.75rem;
+      text-align: center;
+    }
+
+    .shark-table td:last-child {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      text-align: right;
+    }
+
+    .value-normal { color: var(--yellow); }
+    .value-warn { color: #ff8c00; }
+    .value-danger { color: var(--red); }
+    .value-insane { color: #ff2020; text-shadow: 0 0 10px rgba(255,32,32,0.6); animation: pulse-red 1.5s infinite; }
+
+    @keyframes pulse-red {
+      0%, 100% { text-shadow: 0 0 10px rgba(255,32,32,0.6); }
+      50% { text-shadow: 0 0 25px rgba(255,32,32,0.9), 0 0 5px #fff; }
+    }
+
+    .row-highlight {
+      background: rgba(139,0,0,0.2) !important;
+      border-top: 1px solid rgba(231,28,28,0.4) !important;
+      border-bottom: 1px solid rgba(231,28,28,0.4) !important;
+    }
+
+    /* ===== NOTA DE RODAPÉ ABSURDA ===== */
+    .absurd-note {
+      max-width: 860px;
+      margin: 0 auto 40px;
+      padding: 0 40px;
+    }
+
+    .note-box {
+      background: rgba(139,0,0,0.1);
+      border: 1px dashed rgba(231,28,28,0.4);
+      border-radius: 4px;
+      padding: 20px 24px;
+      font-family: 'Special Elite', cursive;
+      font-size: 0.82rem;
+      color: rgba(245,230,200,0.5);
+      line-height: 1.8;
+    }
+
+    .note-box strong {
+      color: var(--red);
+    }
+
+    /* ===== TICKER ===== */
+    .ticker-wrap {
+      background: var(--red);
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 30px 0;
+    }
+
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 20s linear infinite;
+    }
+
+    .ticker-item {
+      display: inline-block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      color: white;
+      padding: 0 40px;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 30px 20px 50px;
+      font-family: 'Special Elite', cursive;
+      font-size: 0.75rem;
+      color: rgba(245,230,200,0.25);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .counter-section { padding: 20px; }
+      .shark-section, .absurd-note { padding: 0 20px; }
+      .shark-table td { padding: 10px 8px; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="stamp">PAGUEM O LUCAS</div>
+   
+
+  <!-- COUNTERS -->
+  <section class="counter-section">
+
+    <!-- Tempo devendo -->
+    <div class="card">
+      <div class="card-label">Há quanto tempo estão devendo</div>
+      <div class="time-grid" id="timer">
+        <div class="time-unit"><span class="time-num" id="t-days">00</span><span class="time-label">dias</span></div>
+        <div class="time-unit"><span class="time-num" id="t-hours">00</span><span class="time-label">horas</span></div>
+        <div class="time-unit"><span class="time-num" id="t-mins">00</span><span class="time-label">min</span></div>
+        <div class="time-unit"><span class="time-num" id="t-secs">00</span><span class="time-label">seg</span></div>
+      </div>
+      <div class="card-sub">desde 28 de fevereiro de 2026, às 00:00</div>
+    </div>
+
+    <!-- Valor original -->
+    <div class="card">
+      <div class="card-label"> Valor original da dívida</div>
+      <div class="card-value">R$ 35<span class="unit">,00</span></div>
+      <div class="card-sub">o preço de um pratão de comida. um crime não pagar.</div>
+    </div>
+
+  </section>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-skull"></span>
+    <div class="divider-line"></div>
+    <span class="divider-skull"></span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- LOAN SHARK -->
+  <section class="shark-section">
+    <div class="shark-header">
+      <div class="shark-title">E SE O LUCAS FOSSE UM AGIOTA?</div>
+    
+    </div>
+
+    <table class="shark-table">
+      <tr class="row-highlight">
+        <td></td>
+        <td>juros compostos por hora · 100% a.h.</td>
+        <td class="value-insane" id="shark-cosmico">R$ --</td>
+      </tr>
+    </table>
+
+  </section>
+
+
+
+</div>
+
+<script>
+  const DEBT_DATE = new Date('2026-02-28T00:00:00');
+  const ORIGINAL = 35;
+
+  function pad(n) { return String(Math.floor(n)).padStart(2, '0'); }
+
+  function formatBRL(value) {
+    // Para números absurdamente grandes, usar notação científica legível
+    if (!isFinite(value) || value > 1e300) return 'R$ ∞ (o universo acabou)';
+    if (value > 1e100) return 'R$ ' + value.toExponential(2).replace('.', ',').replace('e+', ' × 10^') + ' (maior que o universo)';
+    if (value > 1e15) return 'R$ ' + value.toExponential(2).replace('.', ',').replace('e+', ' × 10^');
+    return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function update() {
+    const now = new Date();
+    const diff = now - DEBT_DATE; // ms
+    const totalSecs = diff / 1000;
+    const totalMins = totalSecs / 60;
+    const totalHours = totalMins / 60;
+    const totalDays = totalHours / 24;
+
+    // Timer
+    const d = Math.floor(totalDays);
+    const h = Math.floor(totalHours % 24);
+    const m = Math.floor(totalMins % 60);
+    const s = Math.floor(totalSecs % 60);
+
+    document.getElementById('t-days').textContent = pad(d);
+    document.getElementById('t-hours').textContent = pad(h);
+    document.getElementById('t-mins').textContent = pad(m);
+    document.getElementById('t-secs').textContent = pad(s);
+
+    // Lucas Cósmico: dobra a cada hora (100% a.h.)
+    // Usa BigInt para mostrar o número INTEIRO, sem notação científica
+    const horasCompletas = BigInt(Math.floor(totalHours));
+    const bigVal = BigInt(35) * (BigInt(2) ** horasCompletas);
+    const str = bigVal.toString();
+    const formatted = str.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    document.getElementById('shark-cosmico').textContent = 'R$ ' + formatted + ',00';
+  }
+
+  update();
+  setInterval(update, 1000);
+</script>
+</body>
+</html>
