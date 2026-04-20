@@ -101,7 +101,7 @@
       opacity: 0.9;
     }
 
-    /* ===== DIVIDER ===== */
+    
     .divider {
       display: flex;
       align-items: center;
@@ -112,7 +112,6 @@
     .divider-line { flex: 1; height: 2px; background: linear-gradient(to right, transparent, var(--red), transparent); }
     .divider-skull { font-size: 1.4rem; }
 
-    /* ===== COUNTER SECTION ===== */
     .counter-section {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -275,27 +274,6 @@
       border-bottom: 1px solid rgba(231,28,28,0.4) !important;
     }
 
-    /* ===== NOTA DE RODAPÉ ABSURDA ===== */
-    .absurd-note {
-      max-width: 860px;
-      margin: 0 auto 40px;
-      padding: 0 40px;
-    }
-
-    .note-box {
-      background: rgba(139,0,0,0.1);
-      border: 1px dashed rgba(231,28,28,0.4);
-      border-radius: 4px;
-      padding: 20px 24px;
-      font-family: 'Special Elite', cursive;
-      font-size: 0.82rem;
-      color: rgba(245,230,200,0.5);
-      line-height: 1.8;
-    }
-
-    .note-box strong {
-      color: var(--red);
-    }
 
     /* ===== TICKER ===== */
     .ticker-wrap {
@@ -323,15 +301,6 @@
     @keyframes ticker {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
-    }
-
-    /* ===== FOOTER ===== */
-    .footer {
-      text-align: center;
-      padding: 30px 20px 50px;
-      font-family: 'Special Elite', cursive;
-      font-size: 0.75rem;
-      color: rgba(245,230,200,0.25);
     }
 
     /* Responsive */
@@ -410,7 +379,7 @@
   function pad(n) { return String(Math.floor(n)).padStart(2, '0'); }
 
   function formatBRL(value) {
-    // Para números absurdamente grandes, usar notação científica legível
+   
     if (!isFinite(value) || value > 1e300) return 'R$ ∞ (o universo acabou)';
     if (value > 1e100) return 'R$ ' + value.toExponential(2).replace('.', ',').replace('e+', ' × 10^') + ' (maior que o universo)';
     if (value > 1e15) return 'R$ ' + value.toExponential(2).replace('.', ',').replace('e+', ' × 10^');
@@ -436,8 +405,7 @@
     document.getElementById('t-mins').textContent = pad(m);
     document.getElementById('t-secs').textContent = pad(s);
 
-    // Lucas Cósmico: dobra a cada hora (100% a.h.)
-    // Usa BigInt para mostrar o número INTEIRO, sem notação científica
+   
     const horasCompletas = BigInt(Math.floor(totalHours));
     const bigVal = BigInt(35) * (BigInt(2) ** horasCompletas);
     const str = bigVal.toString();
