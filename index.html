@@ -3,450 +3,421 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PAGUEM O LUCAS</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet" />
+  <title>A DÍVIDA FOI PAGA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --red: #e71c1c;
-      --dark-red: #8b0000;
-      --yellow: #ffd700;
-      --cream: #f5e6c8;
-      --dark: #0d0d0d;
-      --paper: #f0ddb0;
+      --gold: #f5c842;
+      --gold-light: #ffe98a;
+      --gold-dark: #b8921a;
+      --white: #fdf8ee;
+      --cream: #f0e6cc;
+      --sky: #0a1628;
+      --sky-mid: #112240;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background-color: var(--dark);
+      background: var(--sky);
       color: var(--cream);
-      font-family: 'Oswald', sans-serif;
+      font-family: 'EB Garamond', serif;
       overflow-x: hidden;
       min-height: 100vh;
     }
 
-    /* Scanline overlay */
-    body::before {
-      content: '';
+    /* ===== STARS ===== */
+    .stars {
       position: fixed;
       inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.08) 2px,
-        rgba(0,0,0,0.08) 4px
-      );
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    /* Background texture */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        radial-gradient(ellipse at 20% 50%, rgba(139,0,0,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(231,28,28,0.1) 0%, transparent 50%);
-      pointer-events: none;
       z-index: 0;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--dur) ease-in-out infinite var(--delay);
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: var(--min); transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
     }
 
-    .wrapper { position: relative; z-index: 1; }
+    /* ===== RAYS ===== */
+    .rays {
+      position: fixed;
+      top: -10vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200vw;
+      height: 130vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .ray {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 3px;
+      height: 100%;
+      transform-origin: top center;
+      background: linear-gradient(to bottom, rgba(245,200,66,0.15), transparent);
+      animation: ray-pulse 5s ease-in-out infinite;
+    }
+    @keyframes ray-pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.9; }
+    }
 
-    /* ===== HERO ===== */
-    .hero {
+    /* ===== PARTICLES ===== */
+    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particle {
+      position: absolute;
+      top: -10px;
+      width: var(--sz);
+      height: var(--sz);
+      background: var(--clr);
+      border-radius: var(--br);
+      opacity: 0;
+      animation: fall var(--dur2) var(--delay2) ease-in infinite;
+    }
+    @keyframes fall {
+      0%   { opacity: 1; transform: translateX(0) rotate(0deg); top: -10px; }
+      100% { opacity: 0; transform: translateX(var(--drift)) rotate(720deg); top: 110vh; }
+    }
+
+    /* ===== WRAPPER ===== */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
-      padding: 60px 20px 40px;
-      position: relative;
+      padding: 0 20px;
     }
 
-    .stamp {
-      display: inline-block;
-      border: 6px solid var(--red);
-      color: var(--red);
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3rem, 10vw, 8rem);
-      letter-spacing: 0.05em;
-      padding: 10px 30px;
-      transform: rotate(-3deg);
-      text-shadow: 4px 4px 0 rgba(139,0,0,0.5);
-      box-shadow: inset 0 0 0 3px rgba(231,28,28,0.2), 6px 6px 0 rgba(139,0,0,0.4);
-      animation: flicker 4s infinite;
-      position: relative;
+    /* ===== SYMBOL ===== */
+    .symbol {
+      margin-top: 70px;
+      font-size: clamp(4rem, 12vw, 8rem);
+      animation: float 4s ease-in-out infinite, glow-icon 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-14px); }
+    }
+    @keyframes glow-icon {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(245,200,66,0.6)); }
+      50%       { filter: drop-shadow(0 0 55px rgba(245,200,66,1)); }
     }
 
-    .stamp::before {
+    /* ===== TITLE ===== */
+    .main-title {
+      margin-top: 30px;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2rem, 8vw, 6rem);
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: 0 0 40px rgba(245,200,66,0.8), 0 0 80px rgba(245,200,66,0.4), 2px 2px 0 rgba(0,0,0,0.5);
+      line-height: 1.2;
+      animation: title-in 1.2s cubic-bezier(0.22,1,0.36,1) both;
+      letter-spacing: 0.03em;
+    }
+    .title-line2 {
+      color: var(--white);
+      text-shadow: 0 0 30px rgba(255,255,255,0.5), 2px 2px 0 rgba(0,0,0,0.5);
+    }
+    @keyframes title-in {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ===== VERSE ===== */
+    .verse-container {
+      margin-top: 50px;
+      max-width: 680px;
+      animation: fade-up 1.4s 0.3s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .verse-box {
+      padding: 36px 44px;
+      background: rgba(245,200,66,0.05);
+      border: 1px solid rgba(245,200,66,0.2);
+      border-radius: 2px;
+      position: relative;
+    }
+    .verse-corner {
+      position: absolute;
+      width: 18px; height: 18px;
+      border-color: var(--gold-dark);
+      border-style: solid;
+      opacity: 0.7;
+    }
+    .tl { top: 6px; left: 6px; border-width: 2px 0 0 2px; }
+    .tr { top: 6px; right: 6px; border-width: 2px 2px 0 0; }
+    .bl { bottom: 6px; left: 6px; border-width: 0 0 2px 2px; }
+    .br { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
+
+    .verse-ref {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .verse-text {
+      font-size: clamp(1.1rem, 3vw, 1.45rem);
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.9;
+    }
+    .verse-text em {
+      color: var(--gold-light);
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    /* ===== ORNAMENT ===== */
+    .ornament {
+      margin: 50px 0 40px;
+      color: var(--gold-dark);
+      font-size: 1.4rem;
+      letter-spacing: 0.5em;
+      opacity: 0.7;
+      animation: fade-up 1.4s 0.5s both;
+    }
+
+    /* ===== CARDS ===== */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 740px;
+      width: 100%;
+      animation: fade-up 1.4s 0.6s both;
+      margin-bottom: 20px;
+    }
+    .info-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(245,200,66,0.15);
+      border-radius: 2px;
+      padding: 24px 20px;
+      position: relative;
+    }
+    .info-card::before {
       content: '';
       position: absolute;
-      inset: 4px;
-      border: 2px dashed rgba(231,28,28,0.3);
-      pointer-events: none;
+      top: 0; left: 20%; right: 20%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-dark), transparent);
+    }
+    .info-icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .info-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: rgba(245,200,66,0.5);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .info-value {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(245,200,66,0.5);
+    }
+    .info-sub {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: rgba(240,230,204,0.4);
+      font-style: italic;
     }
 
-    @keyframes flicker {
-      0%, 95%, 100% { opacity: 1; }
-      96% { opacity: 0.85; }
-      97% { opacity: 1; }
-      98% { opacity: 0.9; }
+    /* ===== DECLARATION ===== */
+    .declaration {
+      max-width: 620px;
+      margin: 30px 0 20px;
+      animation: fade-up 1.4s 0.8s both;
+    }
+    .declaration-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+    .declaration-text {
+      font-size: 1.05rem;
+      line-height: 2;
+      color: rgba(240,230,204,0.65);
+    }
+    .declaration-text strong {
+      color: var(--gold-light);
+      font-weight: 500;
     }
 
-    .subtitle {
-      margin-top: 20px;
-      font-family: 'Special Elite', cursive;
-      font-size: clamp(1rem, 3vw, 1.4rem);
-      color: var(--yellow);
-      letter-spacing: 0.1em;
-      opacity: 0.9;
+    /* ===== SEAL ===== */
+    .seal {
+      margin: 40px 0 20px;
+      animation: fade-up 1.4s 1s both;
     }
-
-    /* ===== DIVIDER ===== */
-    .divider {
+    .seal-circle {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      border: 3px solid var(--gold-dark);
       display: flex;
       align-items: center;
-      gap: 15px;
-      padding: 0 40px;
-      margin: 20px 0;
+      justify-content: center;
+      flex-direction: column;
+      background: rgba(245,200,66,0.05);
+      animation: seal-glow 3s ease-in-out infinite;
     }
-    .divider-line { flex: 1; height: 2px; background: linear-gradient(to right, transparent, var(--red), transparent); }
-    .divider-skull { font-size: 1.4rem; }
-
-    /* ===== COUNTER SECTION ===== */
-    .counter-section {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      padding: 20px 40px 40px;
-      max-width: 900px;
-      margin: 0 auto;
+    @keyframes seal-glow {
+      0%, 100% { box-shadow: 0 0 30px rgba(245,200,66,0.2); }
+      50%       { box-shadow: 0 0 70px rgba(245,200,66,0.55); }
     }
-
-    .card {
-      background: rgba(20, 5, 5, 0.8);
-      border: 1px solid rgba(231,28,28,0.3);
-      border-radius: 4px;
-      padding: 28px 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(to right, var(--dark-red), var(--red), var(--dark-red));
-    }
-
-    .card-label {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      color: rgba(245,230,200,0.5);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .card-value {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.2rem, 5vw, 3.2rem);
-      color: var(--yellow);
-      line-height: 1;
-      text-shadow: 0 0 20px rgba(255,215,0,0.4);
-    }
-
-    .card-value .unit {
-      font-size: 0.5em;
-      color: rgba(255,215,0,0.6);
-      margin-left: 4px;
-    }
-
-    .card-sub {
-      margin-top: 8px;
-      font-size: 0.78rem;
-      color: rgba(245,230,200,0.4);
-      font-family: 'Special Elite', cursive;
-    }
-
-    /* Time units display */
-    .time-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .time-unit {
-      text-align: center;
-    }
-
-    .time-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2rem;
-      color: var(--yellow);
-      display: block;
-      text-shadow: 0 0 15px rgba(255,215,0,0.4);
-    }
-
-    .time-label {
+    .seal-inner { font-size: 2.8rem; line-height: 1; }
+    .seal-word {
+      font-family: 'Cinzel', serif;
       font-size: 0.6rem;
-      color: rgba(245,230,200,0.4);
-      letter-spacing: 0.15em;
+      letter-spacing: 0.25em;
+      color: var(--gold-dark);
       text-transform: uppercase;
-    }
-
-    /* ===== LOAN SHARK SECTION ===== */
-    .shark-section {
-      max-width: 860px;
-      margin: 0 auto 50px;
-      padding: 0 40px;
-    }
-
-    .shark-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .shark-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2rem, 6vw, 4rem);
-      color: var(--red);
-      letter-spacing: 0.05em;
-      text-shadow: 3px 3px 0 rgba(139,0,0,0.6);
-    }
-
-    .shark-desc {
-      font-family: 'Special Elite', cursive;
-      font-size: 0.9rem;
-      color: rgba(245,230,200,0.5);
-      margin-top: 8px;
-    }
-
-    .shark-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .shark-table tr {
-      border-bottom: 1px solid rgba(231,28,28,0.15);
-      transition: background 0.2s;
-    }
-
-    .shark-table tr:hover {
-      background: rgba(231,28,28,0.07);
-    }
-
-    .shark-table td {
-      padding: 14px 16px;
-      font-size: 0.9rem;
-    }
-
-    .shark-table td:first-child {
-      font-family: 'Special Elite', cursive;
-      color: rgba(245,230,200,0.7);
-      width: 40%;
-    }
-
-    .shark-table td:nth-child(2) {
-      color: rgba(245,230,200,0.4);
-      font-size: 0.75rem;
-      text-align: center;
-    }
-
-    .shark-table td:last-child {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.3rem;
-      text-align: right;
-    }
-
-    .value-normal { color: var(--yellow); }
-    .value-warn { color: #ff8c00; }
-    .value-danger { color: var(--red); }
-    .value-insane { color: #ff2020; text-shadow: 0 0 10px rgba(255,32,32,0.6); animation: pulse-red 1.5s infinite; }
-
-    @keyframes pulse-red {
-      0%, 100% { text-shadow: 0 0 10px rgba(255,32,32,0.6); }
-      50% { text-shadow: 0 0 25px rgba(255,32,32,0.9), 0 0 5px #fff; }
-    }
-
-    .row-highlight {
-      background: rgba(139,0,0,0.2) !important;
-      border-top: 1px solid rgba(231,28,28,0.4) !important;
-      border-bottom: 1px solid rgba(231,28,28,0.4) !important;
-    }
-
-    /* ===== NOTA DE RODAPÉ ABSURDA ===== */
-    .absurd-note {
-      max-width: 860px;
-      margin: 0 auto 40px;
-      padding: 0 40px;
-    }
-
-    .note-box {
-      background: rgba(139,0,0,0.1);
-      border: 1px dashed rgba(231,28,28,0.4);
-      border-radius: 4px;
-      padding: 20px 24px;
-      font-family: 'Special Elite', cursive;
-      font-size: 0.82rem;
-      color: rgba(245,230,200,0.5);
-      line-height: 1.8;
-    }
-
-    .note-box strong {
-      color: var(--red);
-    }
-
-    /* ===== TICKER ===== */
-    .ticker-wrap {
-      background: var(--red);
-      padding: 10px 0;
-      overflow: hidden;
-      white-space: nowrap;
-      margin: 30px 0;
-    }
-
-    .ticker-inner {
-      display: inline-block;
-      animation: ticker 20s linear infinite;
-    }
-
-    .ticker-item {
-      display: inline-block;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.1rem;
-      letter-spacing: 0.15em;
-      color: white;
-      padding: 0 40px;
-    }
-
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
+      margin-top: 4px;
     }
 
     /* ===== FOOTER ===== */
     .footer {
-      text-align: center;
+      margin-top: 60px;
       padding: 30px 20px 50px;
-      font-family: 'Special Elite', cursive;
-      font-size: 0.75rem;
-      color: rgba(245,230,200,0.25);
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: rgba(245,200,66,0.25);
+      text-transform: uppercase;
     }
 
-    /* Responsive */
     @media (max-width: 600px) {
-      .counter-section { padding: 20px; }
-      .shark-section, .absurd-note { padding: 0 20px; }
-      .shark-table td { padding: 10px 8px; font-size: 0.8rem; }
+      .verse-box { padding: 24px 20px; }
+      .cards { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
+
+<div class="stars" id="stars"></div>
+<div class="particles" id="particles"></div>
+<div class="rays" id="rays"></div>
+
 <div class="wrapper">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="stamp">PAGUEM O LUCAS</div>
-   
+ 
 
-  <!-- COUNTERS -->
-  <section class="counter-section">
+  <h1 class="main-title">
+    A DÍVIDA<br>
+    <span class="title-line2">FOI PAGA</span>
+  </h1>
 
-    <!-- Tempo devendo -->
-    <div class="card">
-      <div class="card-label">Há quanto tempo estão devendo</div>
-      <div class="time-grid" id="timer">
-        <div class="time-unit"><span class="time-num" id="t-days">00</span><span class="time-label">dias</span></div>
-        <div class="time-unit"><span class="time-num" id="t-hours">00</span><span class="time-label">horas</span></div>
-        <div class="time-unit"><span class="time-num" id="t-mins">00</span><span class="time-label">min</span></div>
-        <div class="time-unit"><span class="time-num" id="t-secs">00</span><span class="time-label">seg</span></div>
-      </div>
-      <div class="card-sub">desde 28 de fevereiro de 2026, às 00:00</div>
+  <div class="verse-container">
+    <div class="verse-box">
+      <div class="verse-corner tl"></div>
+      <div class="verse-corner tr"></div>
+      <div class="verse-corner bl"></div>
+      <div class="verse-corner br"></div>
+      <div class="verse-ref">Romanos 8 : 1</div>
+      <p class="verse-text">
+        "Portanto, agora <em>nenhuma condenação</em> há para os que estão em Cristo Jesus,
+        que não andam segundo a carne, mas segundo o Espírito."
+      </p>
     </div>
-
-    <!-- Valor original -->
-    <div class="card">
-      <div class="card-label"> Valor original da dívida</div>
-      <div class="card-value">R$ 35<span class="unit">,00</span></div>
-      <div class="card-sub">o preço de um pratão de comida. um crime não pagar.</div>
-    </div>
-
-  </section>
-
-  <div class="divider">
-    <div class="divider-line"></div>
-    <span class="divider-skull"></span>
-    <div class="divider-line"></div>
-    <span class="divider-skull"></span>
-    <div class="divider-line"></div>
   </div>
 
-  <!-- LOAN SHARK -->
-  <section class="shark-section">
-    <div class="shark-header">
-      <div class="shark-title">E SE O LUCAS FOSSE UM AGIOTA?</div>
-    
+  <div class="ornament">✦ ✦ ✦</div>
+
+  <div class="cards">
+    <div class="info-card">
+      <div class="info-icon">💸</div>
+      <div class="info-label">Dívida original</div>
+      <div class="info-value" style="text-decoration: line-through; opacity: 0.45;">R$ 35,00</div>
+      <div class="info-sub">memória histórica</div>
     </div>
+    <div class="info-card">
+      <div class="info-icon">✅</div>
+      <div class="info-label">Saldo atual</div>
+      <div class="info-value">R$ 0,00</div>
+      <div class="info-sub">quitado. zerado. finito.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">🕊️</div>
+      <div class="info-label">Status</div>
+      <div class="info-value" style="font-size:0.95rem; letter-spacing:0.05em;">LIBERTOS</div>
+      <div class="info-sub">sem condenação</div>
+    </div>
+  </div>
 
-    <table class="shark-table">
-      <tr class="row-highlight">
-        <td></td>
-        <td>juros compostos por hora · 100% a.h.</td>
-        <td class="value-insane" id="shark-cosmico">R$ --</td>
-      </tr>
-    </table>
+  <div class="declaration">
+    <h2 class="declaration-title">Todos estão livres.</h2>
+    <p class="declaration-text">
+      Pedro pagou a Divida.<br>
+      A conta foi encerrada. O processo arquivado.<br>
+      <strong>Nenhuma cobrança</strong><br>
+      nenhum agiota do universo perseguirá mais ninguém.<br><br>
+      Que a graça supere qualquer débito —<br>
+      assim como supera o maior de todos.
+    </p>
+  </div>
 
-  </section>
+  <div class="seal">
+    <div class="seal-circle">
+      <div class="seal-inner">🕊️</div>
+      <div class="seal-word">Quitado</div>
+    </div>
+  </div>
 
-
+  <footer class="footer">
+    Lucas Financial Services™ · Encerrado com graça · 2026
+  </footer>
 
 </div>
 
 <script>
-  const DEBT_DATE = new Date('2026-02-28T00:00:00');
-  const ORIGINAL = 35;
-
-  function pad(n) { return String(Math.floor(n)).padStart(2, '0'); }
-
-  function formatBRL(value) {
-    // Para números absurdamente grandes, usar notação científica legível
-    if (!isFinite(value) || value > 1e300) return 'R$ ∞ (o universo acabou)';
-    if (value > 1e100) return 'R$ ' + value.toExponential(2).replace('.', ',').replace('e+', ' × 10^') + ' (maior que o universo)';
-    if (value > 1e15) return 'R$ ' + value.toExponential(2).replace('.', ',').replace('e+', ' × 10^');
-    return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  // Stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 130; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--delay:${Math.random()*6}s;--min:${0.1+Math.random()*0.3};`;
+    starsEl.appendChild(s);
   }
 
-  function update() {
-    const now = new Date();
-    const diff = now - DEBT_DATE; // ms
-    const totalSecs = diff / 1000;
-    const totalMins = totalSecs / 60;
-    const totalHours = totalMins / 60;
-    const totalDays = totalHours / 24;
-
-    // Timer
-    const d = Math.floor(totalDays);
-    const h = Math.floor(totalHours % 24);
-    const m = Math.floor(totalMins % 60);
-    const s = Math.floor(totalSecs % 60);
-
-    document.getElementById('t-days').textContent = pad(d);
-    document.getElementById('t-hours').textContent = pad(h);
-    document.getElementById('t-mins').textContent = pad(m);
-    document.getElementById('t-secs').textContent = pad(s);
-
-    // Lucas Cósmico: dobra a cada hora (100% a.h.)
-    // Usa BigInt para mostrar o número INTEIRO, sem notação científica
-    const horasCompletas = BigInt(Math.floor(totalHours));
-    const bigVal = BigInt(35) * (BigInt(2) ** horasCompletas);
-    const str = bigVal.toString();
-    const formatted = str.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    document.getElementById('shark-cosmico').textContent = 'R$ ' + formatted + ',00';
+  // Rays
+  const raysEl = document.getElementById('rays');
+  for (let i = 0; i < 20; i++) {
+    const r = document.createElement('div');
+    r.className = 'ray';
+    const angle = (i / 20) * 360 - 90;
+    r.style.cssText = `transform:rotate(${angle}deg);animation-delay:${i*0.25}s;width:${2+Math.random()*4}px;`;
+    raysEl.appendChild(r);
   }
 
-  update();
-  setInterval(update, 1000);
+  // Confetti particles
+  const partEl = document.getElementById('particles');
+  const colors = ['#f5c842','#ffe98a','#ffffff','#b8921a','#fdf8ee','#f0e6cc','#d4af37'];
+  for (let i = 0; i < 45; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const sz = 4 + Math.random() * 8;
+    p.style.cssText = `left:${Math.random()*100}%;--sz:${sz}px;--clr:${colors[Math.floor(Math.random()*colors.length)]};--br:${Math.random()>0.5?'50%':'2px'};--dur2:${5+Math.random()*7}s;--delay2:${Math.random()*10}s;--drift:${(Math.random()-0.5)*200}px;`;
+    partEl.appendChild(p);
+  }
 </script>
 </body>
 </html>
